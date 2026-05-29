@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}Rankings | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>Team Rankings</h2>
+    {% if trend_series %}
+    <div class="trend-chart">
+        <h3>Team Trend Lines</h3>
+        <svg viewBox="0 0 300 200" role="img" aria-label="Team total trend lines">
+            <line x1="20" y1="180" x2="280" y2="180" class="axis"></line>
+            <line x1="20" y1="20" x2="20" y2="180" class="axis"></line>
+            {% for series in trend_series %}
+            <polyline points="{{ series.points }}" class="trend trend-{{ forloop.counter }}"></polyline>
+            {% endfor %}
+        </svg>
+        <ul class="plain-list legend-list">
+            {% for series in trend_series %}
+            <li><span class="legend-swatch trend-{{ forloop.counter }}"></span>{{ series.team.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Team</th>
+                <th>Season Scratch</th>
+                <th>Season Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in rankings %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td><a href="{% url 'league:team_detail' team.id %}">{{ team.name }}</a></td>
+                <td>{{ team.season_scratch|default:0 }}</td>
+                <td>{{ team.season_total|default:0 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No team scores yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section class="card">
+    <h2>Top Bowler Averages</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Bowler</th>
+                <th>Team</th>
+                <th>Average Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bowler in top_bowlers %}
+            <tr>
+                <td><a href="{% url 'league:bowler_detail' bowler.id %}">{{ bowler.first_name }} {{ bowler.last_name }}</a></td>
+                <td>{{ bowler.team.name }}</td>
+                <td>{{ bowler.avg_total|floatformat:1|default:"0.0" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3">No bowler scores yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Admin MFA Setup | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card narrow">
+    <h2>Set up admin MFA</h2>
+    <p>Scan this QR code with Microsoft Authenticator, Google Authenticator, or another TOTP app, then enter the current code to confirm setup.</p>
+    <img src="data:image/png;base64,{{ qr_code }}" alt="Authenticator QR code" class="qr-code">
+    <p><strong>Manual key URL:</strong></p>
+    <p class="mono-wrap">{{ device.config_url }}</p>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Confirm MFA</button>
+    </form>
+</section>
+{% endblock %}

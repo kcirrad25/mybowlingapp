@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Import Score Sheet | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card narrow">
+    <h2>Import weekly score sheet (PDF)</h2>
+    <p>Upload a PDF. The system first tries direct text extraction and then falls back to AWS Textract OCR for scanned sheets.</p>
+    <p>Expected text line format inside PDF:</p>
+    <pre>WEEK,1,2026-01-10
+BOWLER,B001,120,140,130,45
+TEAM,Team A,540,520,500,100</pre>
+    <p>If a scanned PDF triggers OCR, use the admin page for the upload record to review status and then call the OCR processing route after Textract completes.</p>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload PDF</button>
+    </form>
+</section>
+{% endblock %}

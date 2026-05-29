@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Team Detail | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>{{ team.name }}</h2>
+    <h3>Bowlers</h3>
+    <ul class="plain-list">
+        {% for bowler in team.bowlers.all %}
+        <li><a href="{% url 'league:bowler_detail' bowler.id %}">{{ bowler.first_name }} {{ bowler.last_name }}</a> ({{ bowler.bowler_code }})</li>
+        {% empty %}
+        <li>No bowlers added.</li>
+        {% endfor %}
+    </ul>
+    <h3>Weekly Team Scores</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Date</th>
+                <th>Game1</th>
+                <th>Game2</th>
+                <th>Game3</th>
+                <th>Handicap</th>
+                <th>Scratch</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in team.team_scores.all %}
+            <tr>
+                <td>{{ score.week.week_number }}</td>
+                <td>{{ score.week.week_date }}</td>
+                <td>{{ score.game1 }}</td>
+                <td>{{ score.game2 }}</td>
+                <td>{{ score.game3 }}</td>
+                <td>{{ score.handicap }}</td>
+                <td>{{ score.scratch_total }}</td>
+                <td>{{ score.total_with_handicap }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">No team scores yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

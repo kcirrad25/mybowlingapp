@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Bowler Detail | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card">
+    <h2>{{ bowler.first_name }} {{ bowler.last_name }}</h2>
+    <p>Team: <a href="{% url 'league:team_detail' bowler.team.id %}">{{ bowler.team.name }}</a> | Code: {{ bowler.bowler_code }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Week</th>
+                <th>Date</th>
+                <th>Game1</th>
+                <th>Game2</th>
+                <th>Game3</th>
+                <th>Handicap</th>
+                <th>Scratch</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for score in scores %}
+            <tr>
+                <td>{{ score.week.week_number }}</td>
+                <td>{{ score.week.week_date }}</td>
+                <td>{{ score.game1 }}</td>
+                <td>{{ score.game2 }}</td>
+                <td>{{ score.game3 }}</td>
+                <td>{{ score.handicap }}</td>
+                <td>{{ score.scratch_total }}</td>
+                <td>{{ score.total_with_handicap }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="8">No bowler scores yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

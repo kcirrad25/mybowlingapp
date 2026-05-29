@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Sign Up | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card narrow">
+    <h2>Create account</h2>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create account</button>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Add Bowler | Cherokee Bowling{% endblock %}
+{% block content %}
+<section class="card narrow">
+    <h2>Add bowler</h2>
+    <form method="post" class="form-grid">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save bowler</button>
+    </form>
+</section>
+{% endblock %}
