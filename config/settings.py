@@ -77,12 +77,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Configure database - SQLite by default, PostgreSQL if DATABASE_URL is set to postgres://
+db_config = dj_database_url.config(
+    default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+    conn_max_age=600,
+)
+# Only add ssl_require for PostgreSQL connections, not SQLite
+if db_config.get('ENGINE') == 'django.db.backends.postgresql':
+    db_config['CONN_HEALTH_CHECKS'] = True
+    db_config['OPTIONS'] = {'sslmode': 'require'} if not DEBUG else {}
+
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        ssl_require=not DEBUG,
-    )
+    'default': db_config
 }
 
 
